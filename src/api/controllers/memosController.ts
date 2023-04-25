@@ -70,8 +70,8 @@ export const memosController = {
   addMemos: async (req: CustomRequest, res: Response) => {
     try {
       const userId = req.userId!;
-      const { title, content } = req.body;
-      const newMemo = await memosService.addMemos(userId, title, content);
+      const { content } = req.body;
+      const newMemo = await memosService.addMemos(userId, content);
       res.status(201).json({ message: `added MemoId is ${newMemo}` });
     } catch (error) {
       console.error(error);
@@ -81,10 +81,11 @@ export const memosController = {
 
   editMemos: async (req: CustomRequest, res: Response) => {
     try {
-      const { title, content } = req.body;
+      const { content } = req.body;
+      console.log(content);
       const memoId = Number(req.params.id);
       const userId = req.userId!;
-      await memosService.editMemos(memoId, userId, title, content);
+      await memosService.editMemos(memoId, userId, content);
       res.status(200).json({ memoId });
     } catch (error) {
       console.error(error);

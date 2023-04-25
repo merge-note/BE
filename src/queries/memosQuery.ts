@@ -13,18 +13,18 @@ export const memosQuery = {
   searchMemos: `
   SELECT *
   FROM memos
-  WHERE user_id = ? AND (title LIKE ? OR content LIKE ?) ORDER BY id DESC 
+  WHERE user_id = ? AND (content LIKE ?) ORDER BY id DESC 
   LIMIT ? OFFSET ?;
 `,
 
   countSearchMemos: `
   SELECT COUNT(*) AS count
   FROM memos
-  WHERE user_id = ? AND (title LIKE ? OR content LIKE ?);
+  WHERE user_id = ? AND (content LIKE ?);
 `,
   addMemos:
-    "INSERT INTO memos (user_id, title, content, created_at) VALUES (?, ?, ?, now())",
+    "INSERT INTO memos (user_id, content, created_at) VALUES (?, ?, now())",
   editMemos:
-    "UPDATE memos SET title = ?, content = ?, updated_at = now() WHERE id = ? AND user_id = ?",
+    "UPDATE memos SET content = ?, updated_at = now() WHERE id = ? AND user_id = ?",
   deleteMemos: "DELETE FROM memos WHERE id = ? AND user_id = ?",
 };

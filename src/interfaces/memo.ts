@@ -1,5 +1,4 @@
 interface MemoContent {
-  title: string;
   content: string;
 }
 

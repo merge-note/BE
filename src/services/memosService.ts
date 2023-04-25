@@ -5,7 +5,6 @@ import { memosQuery } from "../queries/memosQuery";
 interface Memo {
   memo_id: number;
   user_id: number;
-  title: string;
   content: string;
   created_at: Date;
   updated_at?: Date;
@@ -56,7 +55,6 @@ export const memosService = {
     const [rows] = await pool.query(memosQuery.searchMemos, [
       userId,
       searchTerm,
-      searchTerm,
       pageSize,
       offset,
     ]);
@@ -78,23 +76,13 @@ export const memosService = {
     };
   },
 
-  addMemos: async (userId: number, title: string, content: string) => {
-    const [result] = await pool.query(memosQuery.addMemos, [
-      userId,
-      title,
-      content,
-    ]);
+  addMemos: async (userId: number, content: string) => {
+    const [result] = await pool.query(memosQuery.addMemos, [userId, content]);
     return (result as OkPacket).insertId;
   },
 
-  editMemos: async (
-    memoId: number,
-    userId: number,
-    title: string,
-    content: string
-  ) => {
+  editMemos: async (memoId: number, userId: number, content: string) => {
     const [result] = await pool.query(memosQuery.editMemos, [
-      title,
       content,
       memoId,
       userId,
