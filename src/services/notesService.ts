@@ -31,11 +31,17 @@ export const notesService = {
 
     return { memos: rows, totalCount: totalCountRow[0].count };
   },
-  addNotes: async (userId: number, title: string, content: string) => {
+  addNotes: async (
+    userId: number,
+    title: string,
+    content: string,
+    is_temp: boolean = true
+  ) => {
     const [result] = await pool.query(notesQuery.addNotes, [
       userId,
       title,
       content,
+      is_temp,
     ]);
     return (result as OkPacket).insertId;
   },

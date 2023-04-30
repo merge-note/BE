@@ -21,9 +21,14 @@ export const noteController = {
   addNotes: async (req: CustomRequest, res: Response) => {
     try {
       const userId = req.userId!;
-      const { title, content } = req.body;
-      const newNote = await notesService.addNotes(userId, title, content);
-      res.status(201).json({ message: `Added noteId is ${newNote}` });
+      const { title, content, is_temp } = req.body;
+      const newNote = await notesService.addNotes(
+        userId,
+        title,
+        content,
+        is_temp
+      );
+      res.status(201).json({ noteId: newNote });
     } catch (error) {
       console.error(error);
       res.status(500).json({ message: "Internal Server Error" });
