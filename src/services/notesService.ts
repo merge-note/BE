@@ -29,19 +29,21 @@ export const notesService = {
       [userId]
     );
 
-    return { memos: rows, totalCount: totalCountRow[0].count };
+    return { notes: rows, totalCount: totalCountRow[0].count };
   },
   addNotes: async (
     userId: number,
     title: string,
     content: string,
-    is_temp: boolean = true
+    is_temp: boolean = true,
+    is_pinned: boolean = false
   ) => {
     const [result] = await pool.query(notesQuery.addNotes, [
       userId,
       title,
       content,
       is_temp,
+      is_pinned,
     ]);
     return (result as OkPacket).insertId;
   },
@@ -49,11 +51,15 @@ export const notesService = {
     noteId: number,
     userId: number,
     title: string,
-    content: string
+    content: string,
+    is_pinned: boolean,
+    is_temp: boolean = false
   ) => {
     const [result] = await pool.query(notesQuery.editNotes, [
       title,
       content,
+      is_pinned,
+      is_temp,
       noteId,
       userId,
     ]);

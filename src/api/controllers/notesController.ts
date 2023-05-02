@@ -9,7 +9,7 @@ export const noteController = {
   getNotes: async (req: CustomRequest, res: Response) => {
     try {
       const page = req.query.page ? +req.query.page : 1;
-      const pageSize = req.query.pageSize ? +req.query.pageSize : 5;
+      const pageSize = req.query.pageSize ? +req.query.pageSize : 10;
       const userId = req.userId!;
       const notes = await notesService.getNotes(userId, page, pageSize);
       res.status(200).json(notes);
@@ -21,12 +21,13 @@ export const noteController = {
   addNotes: async (req: CustomRequest, res: Response) => {
     try {
       const userId = req.userId!;
-      const { title, content, is_temp } = req.body;
+      const { title, content, is_temp, is_pinned } = req.body;
       const newNote = await notesService.addNotes(
         userId,
         title,
         content,
-        is_temp
+        is_temp,
+        is_pinned
       );
       res.status(201).json({ noteId: newNote });
     } catch (error) {
@@ -36,10 +37,17 @@ export const noteController = {
   },
   editNotes: async (req: CustomRequest, res: Response) => {
     try {
-      const { title, content } = req.body;
+      const { title, content, is_pinned, is_temp } = req.body;
       const noteId = Number(req.params.id);
       const userId = req.userId!;
-      await notesService.editNotes(noteId, userId, title, content);
+      await notesService.editNotes(
+        noteId,
+        userId,
+        title,
+        content,
+        is_pinned,
+        is_temp
+      );
       res.status(200).json({ noteId });
     } catch (error) {
       console.error(error);
